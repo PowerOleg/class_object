@@ -6,69 +6,63 @@ private:
 	double num1, num2;
 
 public:
-	double add(double num1, double num2)
+	double add()
 	{
 		return num1 + num2;
 	}
 
-	double multiply(double num1, double num2)
+	double multiply()
 	{
 		return num1 * num2;
 	}
 
-	double subtract_1_2(double num1, double num2)
+	double subtract_1_2()
 	{
 		return num1 - num2;
 	}
 
-	double subtract_2_1(double num1, double num2)
+	double subtract_2_1()
 	{
 		return num2 - num1;
 	}
 
-	double divide_1_2(double num1, double num2)
+	double divide_1_2()
 	{
+		if (num1 == 0 && num2 == 0)
+		{
+			return 0;
+		}
 		return num1 / num2;
 	}
 
-	double divide_2_1(double num1, double num2)
+	double divide_2_1()
 	{
+		if (num1 == 0 && num2 == 0)
+		{
+			return 0;
+		}
 		return num2 / num1;
 	}
 
 	bool set_num1(double num1)
 	{
-		if (num1 != 0)
-		{
-			this->num1 = num1;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		this->num1 = num1;
+		return true;
 	}
 
 	bool set_num2(double num2)
 	{
-		if (num2 != 0)
-		{
-			this->num2 = num2;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		this->num2 = num2;
+		return true;
 	}
 		
-	bool hasError(double num1, double num2)
+	bool hasError()
 	{
-		if (num1 / num2 == INFINITY)
+		if (num1 / num2 < std::numeric_limits<double>::epsilon())
 		{
 			return true;
 		}
-		else if (num2 / num1 == INFINITY)
+		else if (num2 / num1 < std::numeric_limits<double>::epsilon())
 		{
 			return true;
 		}
@@ -77,7 +71,6 @@ public:
 			return false;
 		}
 	}
-
 };
 
 int main(int argc, char** argv)
@@ -90,21 +83,25 @@ int main(int argc, char** argv)
 		double num1 = 0;
 		std::cout << "Введите num1: ";
 		std::cin >> num1;
+		calc.set_num1(num1);
 		double num2 = 0;
 		std::cout << "Введите num2: ";
 		std::cin >> num2;
-		double sum = calc.add(num1, num2);
-		double multiplication = calc.multiply(num1, num2);
+		calc.set_num2(num2);
 
-		double subtract_1_2 = calc.subtract_1_2(num1, num2);
-		double subtract_2_1 = calc.subtract_2_1(num1, num2);
+		std::cout << num1 << " " << num2 << std::endl;
+		double sum = calc.add();
+		double multiplication = calc.multiply();
 
-		double divide_1_2 = calc.divide_1_2(num1, num2);
-		double divide_2_1 = calc.divide_2_1(num1, num2);
+		double subtract_1_2 = calc.subtract_1_2();
+		double subtract_2_1 = calc.subtract_2_1();
+
+		double divide_1_2 = calc.divide_1_2();
+		double divide_2_1 = calc.divide_2_1();
 
 		calc.set_num1(num1);
 		calc.set_num2(num2);
-		if (calc.hasError(num1, num2))
+		if (calc.hasError())
 		{
 			std::cout << "Неверный ввод! Введите значение ещё раз!" << std::endl;
 			continue;
@@ -113,8 +110,17 @@ int main(int argc, char** argv)
 		std::cout << "num1 - num2 = " << subtract_1_2 << std::endl;
 		std::cout << "num2 - num1 = " << subtract_2_1 << std::endl;
 		std::cout << "num1 * num2 = " << multiplication << std::endl;
-		std::cout << "num1 / num2 = " << divide_1_2 << std::endl;
-		std::cout << "num2 / num1 = " << divide_2_1 << std::endl;
+		if (num1 == 0 && num2 == 0)
+		{
+			std::cout << "num1 / num2 = " << "Результат не определен" << std::endl;
+			std::cout << "num2 / num1 = " << "Результат не определен" << std::endl;
+		}
+		else
+		{
+			std::cout << "num1 / num2 = " << divide_1_2 << std::endl;
+			std::cout << "num2 / num1 = " << divide_2_1 << std::endl;
+		}
+		
 	} while (true);
 	return 0;
 }
