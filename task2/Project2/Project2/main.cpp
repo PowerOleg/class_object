@@ -32,28 +32,33 @@ public:
 	}
 };
 
-void loop(Counter counter)
+void loop(Counter* counter)
 {
 	char input3 = '0';
-	do
+	std::cout << "¬ведите команду('+', '-', '=' или 'x'(eng)): " << std::endl;
+	std::cin >> input3;
+	while (input3 != 'x')
 	{
-		std::cout << "¬ведите команду('+', '-', '=' или 'x'(eng)): " << std::endl;
+		if (input3 != 'в')
+		{
+			std::cout << "¬ведите команду('+', '-', '=' или 'x'(eng)): " << std::endl;
+		}
 		std::cin >> input3;
 		switch (input3)
 		{
 		case '+':
-			counter.increment();
+			counter->increment();
 			break;
 		case '-':
-			counter.decrement();
+			counter->decrement();
 			break;
 		case '=':
-			counter.print_count();
+			counter->print_count();
 			break;
 		default:
 			break;
 		}
-	} while (input3 != 'x');
+	};
 }
 
 int main(int argc, char** argv)
@@ -64,19 +69,20 @@ int main(int argc, char** argv)
 	char input1[7]{"нет"};
 	char yes[5]{"§†"};
 	std::cin >> std::setw(3) >> input1;
+	Counter* counter = nullptr;
 	if (!strcmp(input1, yes))
 	{
 		std::cout << "¬ведите начальное значение счЄтчика: " << std::endl;
 		int input2 = 0;
 		std::cin >> input2;
-		Counter counter1(input2);
-		loop(counter1);
+		counter = new Counter(input2);
 	}
 	else
 	{
-		Counter counter2;
-		loop(counter2);
+		counter = new Counter;
 	}
+	loop(counter);
+	delete counter;
 	std::cout << "Bye";
 	return 0;
 }
